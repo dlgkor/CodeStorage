@@ -1,4 +1,5 @@
-﻿#include<windows.h>
+//마우스 힘계산
+#include<windows.h>
 #include<string>
 #include"CalculateMouse.h"
 
