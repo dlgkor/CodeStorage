@@ -5,12 +5,12 @@ int main() {
 	FILE* fp = NULL;
 
 	int mode = 0;
-	srand(time(NULL)); //³­¼ö ½Ãµå »ı¼º
+	srand(time(NULL)); //ë‚œìˆ˜ ì‹œë“œ ìƒì„±
 	makeBuffer();
 
 	thread t1(getDir);
 
-	//¸Ş´ºÃ¢
+	//ë©”ë‰´ì°½
 
 	loadScore(fp);
 
@@ -20,7 +20,7 @@ int main() {
 		
 		mode = Menu();
 		if (mode == 0) {
-			Game(); //ÀÎ°ÔÀÓ
+			Game(); //ì¸ê²Œì„
 			saveScore(fp);
 			isGameOn = doAgain();
 		}
@@ -37,7 +37,7 @@ int main() {
 }
 
 void makeBuffer() {
-	//ÄÜ¼ÖÃ¢ »ı¼º
+	//ì½˜ì†”ì°½ ìƒì„±
 	hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 	coordBufSize.X = WIDTH;
 	coordBufSize.Y = HEIGHT;
@@ -83,8 +83,8 @@ void prCharLine(const char* ch, int atb, int x, int y) {
 		}
 		else
 		{
-			chiBuffer[y * WIDTH + x + j].Char.UnicodeChar = ch[j]; //±ÛÀÚÁöÁ¤
-			chiBuffer[y * WIDTH + x + j].Attributes = atb; // »ö±òÁöÁ¤
+			chiBuffer[y * WIDTH + x + j].Char.UnicodeChar = ch[j]; //ê¸€ìì§€ì •
+			chiBuffer[y * WIDTH + x + j].Attributes = atb; // ìƒ‰ê¹”ì§€ì •
 
 		}
 	}
@@ -108,7 +108,7 @@ void clearScreen(int color) {
 }
 
 void printScreen() {
-	static int i = 0; //¹«½¼ ¹öÆÛ »ç¿ëÇÒÁö ±¸ºĞ
+	static int i = 0; //ë¬´ìŠ¨ ë²„í¼ ì‚¬ìš©í• ì§€ êµ¬ë¶„
 
 	if (i % 2 == 0) {
 		curScreenBufferHandle = hNewScreenBuffer;
@@ -129,13 +129,13 @@ void printScreen() {
 		return;
 	}
 
-	Sleep(1 / 60.0f * 1000.0f); //Àá±ñ ¸ØÃã
-	i++; //¹öÆÛ ¹Ù²Ù±â
+	Sleep(1 / 60.0f * 1000.0f); //ì ê¹ ë©ˆì¶¤
+	i++; //ë²„í¼ ë°”ê¾¸ê¸°
 }
 
 int Menu() {
 	dir = 0;
-	//& ¹®ÀÚ´Â Ãâ·Â ¾ÈÇÏ°Ô ÁöÁ¤ÇØ³õÀ½(±ôºıÀÓ ¹æÁö)
+	//& ë¬¸ìëŠ” ì¶œë ¥ ì•ˆí•˜ê²Œ ì§€ì •í•´ë†“ìŒ(ê¹œë¹¡ì„ ë°©ì§€)
 	const char* menu[10] = { "**********************************",
 							"*           Snake Game           *",
 							"*   move: arrow, select: space   *",
@@ -197,11 +197,11 @@ void Game() {
 	dir = player.dir;
 	bool isDead = false;
 
-	clock_t last_movetime; //¸¶Áö¸·À¸·Î ¿òÁ÷ÀÎ ½Ã°£
-	double speed = 0.1f; //ÀÌµ¿¼Óµµ
+	clock_t last_movetime; //ë§ˆì§€ë§‰ìœ¼ë¡œ ì›€ì§ì¸ ì‹œê°„
+	double speed = 0.1f; //ì´ë™ì†ë„
 
-	clock_t last_gentime; //¸¶Áö¸·À¸·Î »ı¼ºÇÑ ½Ã°£
-	double gentime = 1.5f; //»ı¼º¼Óµµ
+	clock_t last_gentime; //ë§ˆì§€ë§‰ìœ¼ë¡œ ìƒì„±í•œ ì‹œê°„
+	double gentime = 1.5f; //ìƒì„±ì†ë„
 
 	//Game start
 	addBody(&player);
@@ -214,11 +214,11 @@ void Game() {
 	last_gentime = clock();
 	while (!isDead)
 	{
-		//ÀÏÁ¤ ½Ã°£¸¶´Ù dir È®ÀÎ
-		//±× ¹æÇâÀ¸·Î ÀÌµ¿(Á×À½ÆÇÁ¤, ¸ÔÀÌÆÇÁ¤)
-		//dir 0À¸·Î ÃÊ±âÈ­
-		//esc´©¸£¸é ÀÏ½ÃÁ¤Áö °¡´ÉÇÏ°Ô
-		//Á¡¼ö°è»ê
+		//ì¼ì • ì‹œê°„ë§ˆë‹¤ dir í™•ì¸
+		//ê·¸ ë°©í–¥ìœ¼ë¡œ ì´ë™(ì£½ìŒíŒì •, ë¨¹ì´íŒì •)
+		//dir 0ìœ¼ë¡œ ì´ˆê¸°í™”
+		//escëˆ„ë¥´ë©´ ì¼ì‹œì •ì§€ ê°€ëŠ¥í•˜ê²Œ
+		//ì ìˆ˜ê³„ì‚°
 		if ((float)(clock() - last_movetime) / CLOCKS_PER_SEC > speed) {
 			isDead = !checkFront(gamestage, &player, foods, &fnum);
 			moveSnake(&player);
@@ -340,7 +340,7 @@ bool doAgain() {
 }
 
 void resetStage(char(*stage)[STAGE_SIZE], Snake* sk, Food* f[], int* fnum) {
-	//ÀüÃ¼¹è¿­ °ø¹éÀ¸·Î ÃÊ±âÈ­
+	//ì „ì²´ë°°ì—´ ê³µë°±ìœ¼ë¡œ ì´ˆê¸°í™”
 	int i;
 	for (i = 0; i < STAGE_SIZE; i++) {
 		for (int j = 0; j < STAGE_SIZE; j++) {
@@ -355,13 +355,13 @@ void resetStage(char(*stage)[STAGE_SIZE], Snake* sk, Food* f[], int* fnum) {
 		stage[i][STAGE_SIZE - 1] = WALL_TEX;
 	}
 
-	//¸öÅëÀ§Ä¡¿¡ O ¹®ÀÚ
+	//ëª¸í†µìœ„ì¹˜ì— O ë¬¸ì
 	for (i = 0; i < sk->bodylen; i++) {
 		stage[sk->body[i].x][sk->body[i].y] = BODY_TEX;
 	}
-	//¸Ó¸® À§Ä¡¿¡ @ ¹®ÀÚ
+	//ë¨¸ë¦¬ ìœ„ì¹˜ì— @ ë¬¸ì
 	stage[sk->head.x][sk->head.y] = HEAD_TEX;
-	//¸ÔÀÌ¿¡ $¹®ÀÚ
+	//ë¨¹ì´ì— $ë¬¸ì
 	for (i = 0; i < *fnum; i++) {
 		stage[f[i]->pos.x][f[i]->pos.y] = FOOD_TEX;
 	}
@@ -372,11 +372,11 @@ void resetStage(char(*stage)[STAGE_SIZE], Snake* sk, Food* f[], int* fnum) {
 void printStage(char(*stage)[STAGE_SIZE]) {
 
 
-	//È­¸é ÃÊ±âÈ­
+	//í™”ë©´ ì´ˆê¸°í™”
 
 	clearScreen(BASIC_COLOR);
 
-	//°ÔÀÓ½ºÅ×ÀÌÁö Ãâ·Â
+	//ê²Œì„ìŠ¤í…Œì´ì§€ ì¶œë ¥
 	for (int i = 0; i < STAGE_SIZE; i++) {
 		for (int j = 0; j < STAGE_SIZE; j++) {
 			chiBuffer[j * 2 + i * WIDTH].Char.UnicodeChar = stage[j][i];
@@ -384,7 +384,7 @@ void printStage(char(*stage)[STAGE_SIZE]) {
 		}
 	}
 
-	//ÇöÀçÁ¡¼ö Ãâ·Â
+	//í˜„ì¬ì ìˆ˜ ì¶œë ¥
 
 	int scorex = WIDTH / 2, scorey = STAGE_SIZE / 2;
 	int a, b, c, d;
@@ -400,7 +400,7 @@ void printStage(char(*stage)[STAGE_SIZE]) {
 	chiBuffer[scorex + scorey * WIDTH + 2].Char.UnicodeChar = c + '0';
 	chiBuffer[scorex + scorey * WIDTH + 3].Char.UnicodeChar = d + '0';
 
-	//ÃÖ°í Á¡¼ö Ãâ·Â
+	//ìµœê³  ì ìˆ˜ ì¶œë ¥
 
 	prCharLine("HighScore : ", BASIC_COLOR, scorex - 12, scorey + 2);
 
@@ -413,7 +413,7 @@ void printStage(char(*stage)[STAGE_SIZE]) {
 	chiBuffer[scorex + (scorey + 2) * WIDTH + 2].Char.UnicodeChar = c + '0';
 	chiBuffer[scorex + (scorey + 2) * WIDTH + 3].Char.UnicodeChar = d + '0';
 
-	//Àû¿ë
+	//ì ìš©
 	printScreen();
 	return;
 }
@@ -436,9 +436,9 @@ void countDown() {
 }
 
 void addBody(Snake* sk) {
-	//²¿¸®À§Ä¡¿¡ ¸öÅë »ı¼º
+	//ê¼¬ë¦¬ìœ„ì¹˜ì— ëª¸í†µ ìƒì„±
 	sk->body[sk->bodylen] = sk->tail;
-	//¸ö±æÀÌ+1
+	//ëª¸ê¸¸ì´+1
 	sk->bodylen++;
 	return;
 }
@@ -454,7 +454,7 @@ int checkFront(char(*stage)[STAGE_SIZE], Snake* sk, Food* f[], int* fnum) {
 	switch (sk->dir)
 	{
 	case UP:
-		next.y = sk->head.y - 1; //¹è¿­ÀÌ 0ºÎÅÍ À§ÂÊÀÌ¶ó -1
+		next.y = sk->head.y - 1; //ë°°ì—´ì´ 0ë¶€í„° ìœ„ìª½ì´ë¼ -1
 		break;
 	case DOWN:
 		next.y = sk->head.y + 1;
@@ -468,7 +468,7 @@ int checkFront(char(*stage)[STAGE_SIZE], Snake* sk, Food* f[], int* fnum) {
 	default:
 		break;
 	}
-	//Á×À½ 0 ÀÌµ¿°¡´É 1
+	//ì£½ìŒ 0 ì´ë™ê°€ëŠ¥ 1
 	if (stage[next.x][next.y] != ' ') {
 		if (stage[next.x][next.y] == WALL_TEX) {
 			return 0;
@@ -483,7 +483,7 @@ int checkFront(char(*stage)[STAGE_SIZE], Snake* sk, Food* f[], int* fnum) {
 			}
 		}
 		else if (stage[next.x][next.y] == BODY_TEX) {
-			//¸ñÀº È®ÀÎÇÒ ÇÊ¿ä ¾øÀ½
+			//ëª©ì€ í™•ì¸í•  í•„ìš” ì—†ìŒ
 			for (int i = 1; i < sk->bodylen; i++) {
 				if (sk->body[i].x == next.x && sk->body[i].y == next.y) {
 					return 0;
@@ -495,21 +495,21 @@ int checkFront(char(*stage)[STAGE_SIZE], Snake* sk, Food* f[], int* fnum) {
 }
 
 void moveSnake(Snake* sk) {
-	//ÀÚ±â ¸öÅëÂÊÀ¸·Î´Â ¸ø°¡°Ô ¿¹¿ÜÃ³¸® ÇÊ¿ä(dir ÀÔ·Â¹ŞÀ»¶§ ¼­·Î »ó¹İµÇ¸é °ª ¹ŞÁö ¾Ê±â)
+	//ìê¸° ëª¸í†µìª½ìœ¼ë¡œëŠ” ëª»ê°€ê²Œ ì˜ˆì™¸ì²˜ë¦¬ í•„ìš”(dir ì…ë ¥ë°›ì„ë•Œ ì„œë¡œ ìƒë°˜ë˜ë©´ ê°’ ë°›ì§€ ì•Šê¸°)
 	for (int i = sk->bodylen - 1; i > 0; i--) {
-		//¿¬°áµÈ ¾ÕºÎºĞ ¸öÅë ÁÂÇ¥·Î ÀÌµ¿
+		//ì—°ê²°ëœ ì•ë¶€ë¶„ ëª¸í†µ ì¢Œí‘œë¡œ ì´ë™
 		sk->body[i] = sk->body[i - 1];
 	}
 	if (sk->bodylen != 0) {
-		//¸öÅë ±æÀÌ°¡ 0ÀÌ ¾Æ´Ï¶ó¸é ¸Ó¸® À§Ä¡·Î body[0] ÀÌµ¿
+		//ëª¸í†µ ê¸¸ì´ê°€ 0ì´ ì•„ë‹ˆë¼ë©´ ë¨¸ë¦¬ ìœ„ì¹˜ë¡œ body[0] ì´ë™
 		sk->body[0] = sk->head;
 		sk->tail = sk->body[sk->bodylen - 1];
 	}
-	//ÀÌµ¿¹æÇâ¿¡ µû¶ó ¸Ó¸® ÀÌµ¿
+	//ì´ë™ë°©í–¥ì— ë”°ë¼ ë¨¸ë¦¬ ì´ë™
 	switch (sk->dir)
 	{
 	case UP:
-		sk->head.y--; //¹è¿­ÀÌ 0ºÎÅÍ À§ÂÊÀÌ¶ó -1
+		sk->head.y--; //ë°°ì—´ì´ 0ë¶€í„° ìœ„ìª½ì´ë¼ -1
 		break;
 	case DOWN:
 		sk->head.y++;
@@ -529,7 +529,7 @@ void moveSnake(Snake* sk) {
 
 void getDir() {
 	while (isGameOn) {
-		//¿ø·¡ ÀÌµ¿¹æÇâ°ú °°°Å³ª »ó¹İµÇ¸é ¹æÇâ ¹Ù²ÙÁö ¾ÊÀ½
+		//ì›ë˜ ì´ë™ë°©í–¥ê³¼ ê°™ê±°ë‚˜ ìƒë°˜ë˜ë©´ ë°©í–¥ ë°”ê¾¸ì§€ ì•ŠìŒ
 		dir = _getch();
 
 		Sleep(1 / 60.0f);
@@ -537,8 +537,8 @@ void getDir() {
 }
 
 Food* makeFood(char(*stage)[STAGE_SIZE]) {
-	//static int fnum = 0; //¸ÔÀÌ °¹¼ö
-	//Food* food = (Food*)malloc(sizeof(Food)); //Èü °ø°£ ÇÒ´ç
+	//static int fnum = 0; //ë¨¹ì´ ê°¯ìˆ˜
+	//Food* food = (Food*)malloc(sizeof(Food)); //í™ ê³µê°„ í• ë‹¹
 	Food* food = new Food;
 
 	while (1) {
