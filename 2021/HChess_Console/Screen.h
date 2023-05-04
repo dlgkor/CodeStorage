@@ -74,7 +74,7 @@ public:
 
 	}
 	void Show() {
-		static int i = 0; //¹«½¼ ¹öÆÛ »ç¿ëÇÒÁö ±¸ºĞ
+		static int i = 0; //ë¬´ìŠ¨ ë²„í¼ ì‚¬ìš©í• ì§€ êµ¬ë¶„
 
 		if (i % 2 == 0) {
 			curScreenBufferHandle = hNewScreenBuffer;
@@ -94,18 +94,18 @@ public:
 			printf("SetConsoleActiveScreenBuffer failed - (%d)\n", GetLastError());
 			return;
 		}
-		i++; //¹öÆÛ ¹Ù²Ù±â
+		i++; //ë²„í¼ ë°”ê¾¸ê¸°
 	}
 
 	void Add(int x, int y, int atb, char ch) {
-		//È­¸é¹ÛÀ¸·Î ³ª°¡´Â°Å ¿¹¿ÜÃ³¸®
+		//í™”ë©´ë°–ìœ¼ë¡œ ë‚˜ê°€ëŠ”ê±° ì˜ˆì™¸ì²˜ë¦¬
 		if (x<0 || x>WIDTH - 1)
 			return;
 		if (y<0 || y>HEIGHT - 1)
 			return;
 
-		chiBuffer[y * WIDTH + x].Char.UnicodeChar = ch; //±ÛÀÚÁöÁ¤
-		chiBuffer[y * WIDTH + x].Attributes = atb; // »ö±òÁöÁ¤
+		chiBuffer[y * WIDTH + x].Char.UnicodeChar = ch; //ê¸€ìì§€ì •
+		chiBuffer[y * WIDTH + x].Attributes = atb; // ìƒ‰ê¹”ì§€ì •
 	}
 	void Add(int x, int y, int atb, const char* ch) {
 		for (int j = 0;; j++) {
